@@ -1,0 +1,20 @@
+version: '3.2'
+services:
+    db:
+        image: mongo:4-xenial
+        volumes:
+            - './db:/data/db'
+        ports:
+            - '127.0.0.1:27021:27017'
+    app:
+        image: birds-of-poland-js:latest
+        build:
+            context: .
+            dockerfile: app.dockerfile
+        links:
+            - db
+        volumes:
+            - './:/opt/birds-of-poland'
+        ports:
+            - '127.0.0.1:8001:8001'
+        user: ${UID:-1000}:${GID:-1000}
